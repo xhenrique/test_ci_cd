@@ -5,7 +5,7 @@ csv_options:
   # Codificação do arquivo (comum ser utf-8 ou latin-1)
   encoding: 'utf-8'
   # Nome do arquivo CSV/TXT a ser processado (pode ser sobrescrito por argumento de linha de comando)
-  default_input_file: 'José - Análise plano de testes - Pix Automatico.txt'
+  default_input_file: 'pix_automatico.csv'
 
 # --- Mapeamento das Colunas do CSV ---
 # Mapeia os nomes padrão que o script usa para os nomes REAIS das colunas no SEU arquivo
