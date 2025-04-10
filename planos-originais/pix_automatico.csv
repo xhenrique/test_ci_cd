@@ -1,5 +1,5 @@
-Test Plan,Test Module,Test Summary,Proposal,Comments
-automatic-payments_test-plan_v2,automatic-payments_api_expirationDateTime_test-module_v2,"Ensure a consent is expired after the expirationDateTime is reached, and that payments can no longer be executed.
+planName;testModule;summary
+automatic-payments_test-plan_v2;automatic-payments_api_expirationDateTime_test-module_v2;"Ensure a consent is expired after the expirationDateTime is reached, and that payments can no longer be executed.
 • Call the POST recurring-consents endpoint without sending any limits at sweeping accounts fields, not sending the startDateTime, and expirationDateTime as now + 2 minutes
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Redirect the user to authorize consent
@@ -7,12 +7,13 @@ automatic-payments_test-plan_v2,automatic-payments_api_expirationDateTime_test-m
 • Expect 201 - Validate Response and ensure status is AUTHORISED
 • Set the conformance suite to sleep for 2 minutes
 • Call the GET recurring-consents endpoint
-• Expect 201 - Validate Response and ensure status is REVOKED
+• Expect 201 - Validate Response and ensure status is CONSUMED
 • Call the POST recurring-payments endpoint
-• Expect 401 or 422 - Validate Error Message
+• Expect 401 or 422 - If 422, validate Error Message
 • Try to refresh token
-• Expect 400 - Validate Error Message",,
-automatic-payments_test-plan_v2,automatic-payments_api_invalid-scope_test-module_v2,"Ensure scope validations are being executed at the POST recurring-payments endpoint, and a payment cannot be created in unhappy requests
+• Expect 400 - Validate Error Message
+"
+automatic-payments_test-plan_v2;automatic-payments_api_invalid-scope_test-module_v2;"Ensure scope validations are being executed at the POST recurring-payments endpoint, and a payment cannot be created in unhappy requests
 • Call the POST recurring-consents endpoint with sweeping accounts data 
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Redirect the user to authorize consent, sending the scopes as scope=openid&recurring-payments&consent:{recurringConsentId} 
@@ -21,8 +22,8 @@ If no errors are returned:
 • Call the GET recurring-consents endpoint 
 • Expect 201 - Validate Response and ensure status is AUTHORISED 
 • Call the POST recurring-payments endpoint using an auth code token with a incorrect scope, as requested at the redirect 
-• Expect 403 - Validate Response",,
-automatic-payments_test-plan_v2,automatic-payments_api_multiple-consents-core_test-module_v2,"Ensure a multiple consents account requires full authorization before payment is executed. Afterwards, it will check if the consent will be fully authorized. This test will use the CPF/CNPJ on the config for ""Payment consent -  XXX - Multiple Consents Test"", or Skipped if the field is not filled. The CPF/CNPJ informed will also be sent at the creditor account.
+• Expect 403"
+automatic-payments_test-plan_v2;automatic-payments_api_multiple-consents-core_test-module_v2;"Ensure a multiple consents account requires full authorization before payment is executed. Afterwards, it will check if the consent will be fully authorized. This test will use the CPF/CNPJ on the config for ""Payment consent -  XXX - Multiple Consents Test"", or Skipped if the field is not filled. The CPF/CNPJ informed will also be sent at the creditor account.
 • Call the POST recurring-consents endpoint with sweeping accounts fields, with the Multiple Accounts CPF/CNPJ
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Redirect the user to authorize consent
@@ -34,8 +35,8 @@ automatic-payments_test-plan_v2,automatic-payments_api_multiple-consents-core_te
 • Call the GET recurring-consents endpoint
 • Expect 201 - Validate Response and ensure status is AUTHORISED
 • Call the POST recurring-payments endpoint with the selected creditor
-• Expect 201 - Validate Response",,
-automatic-payments_test-plan_v2,automatic-payments_api_negative-consents_test-module_v2,"Ensure validations are being executed at the POST recurring-consent endpoint, and a consent cannot be created in unhappy requests
+• Expect 201 - Validate Response"
+automatic-payments_test-plan_v2;automatic-payments_api_negative-consents_test-module_v2;"Ensure validations are being executed at the POST recurring-consent endpoint, and a consent cannot be created in unhappy requests
 • Call the POST recurring-consents endpoint without the recurringConfiguration.sweeping field 
 • Expect 422 PARAMETRO_NAO_INFORMADO or 400 - Validate Error Message
 • Call the POST recurring-consents endpoint with the start date time as D+10 and expirationDateTime as D+5
@@ -43,8 +44,8 @@ automatic-payments_test-plan_v2,automatic-payments_api_negative-consents_test-mo
 • Call the POST recurring-consents endpoint without the x-fapi-interaction-id
 • Expect 400 - Validate Error Message and check if a x-fapi-interaction-id has been sent back 
 • Call the POST recurring-consents endpoint with the x-fapi-interaction-id as '123456'
-• Expect 400 or 422 PARAMETRO_INVALIDO - Validate Error Message and check if a x-fapi-interaction-id has been sent back",,
-automatic-payments_test-plan_v2,automatic-payments_api_rejected-consent_test-module_v2,"Ensure a consent is REJECTED when the PATCH recurring-consentId endpoint is called before approval.
+• Expect 400 - Validate Error Message and check if a x-fapi-interaction-id has been sent back"
+automatic-payments_test-plan_v2;automatic-payments_api_rejected-consent_test-module_v2;"Ensure a consent is REJECTED when the PATCH recurring-consentId endpoint is called before approval.
 • Call the POST recurring-consents endpoint with sweeping accounts fields
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Call the GET recurring-consents endpoint
@@ -52,8 +53,8 @@ automatic-payments_test-plan_v2,automatic-payments_api_rejected-consent_test-mod
 • Call the PATCH {recurringConsentId} endpoint  with status as REJECTED, rejectedBy is USUARIO, rejectedFrom is INICIADORA and reason.code is REJEITADO_USUARIO
 • Expect 200 - Validate Message
 • Call the GET recurring-consents endpoint
-• Expect 201 - Validate Response and ensure status as REJECTED, rejectedBy is USUARIO, rejectedFrom is INICIADORA and reason.code is REJEITADO_USUARIO",,
-automatic-payments_test-plan_v2,automatic-payments_api_revoked-consent_test-module_v2,"Ensure a consent is REVOKED when the PATCH recurring-consent endpoint is called after approval.
+• Expect 201 - Validate Response and ensure status as REJECTED, rejectedBy is USUARIO, rejectedFrom is INICIADORA and reason.code is REJEITADO_USUARIO"
+automatic-payments_test-plan_v2;automatic-payments_api_revoked-consent_test-module_v2;"Ensure a consent is REVOKED when the PATCH recurring-consent endpoint is called after approval.
 • Call the POST recurring-consents endpoint with sweeping accounts fields and a infinite consent, not sending the expirationDateTime field
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Call the GET recurring-consents endpoint
@@ -66,11 +67,11 @@ automatic-payments_test-plan_v2,automatic-payments_api_revoked-consent_test-modu
 • Call the GET recurring-consents endpoint
 • Expect 201 - Validate Response and ensure status as REVOKED, revokedBy is USUARIO, revokedFrom is INICIADORA and reason.code is REVOGADO_USUARIO
 • Call the POST recurring-payments endpoint
-• Expect 401 or 422 - Validate Error Message
+• Expect 401 or 422 - If 422, validate Error Message
 • Try to refresh token
 • Expect 400 - Validate Error Message
-",,
-automatic-payments_test-plan_v2,automatic-payments_api_startDateTime_test-module_v2,"Ensure a payment cannot be executed if its sent prior to startDateTime
+"
+automatic-payments_test-plan_v2;automatic-payments_api_startDateTime_test-module_v2;"Ensure a payment cannot be executed if its sent prior to startDateTime
 • Call the POST recurring-consents endpoint with sweeping accounts fields, and startDateTime as D + 10
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Redirect the user to authorize consent
@@ -79,8 +80,19 @@ automatic-payments_test-plan_v2,automatic-payments_api_startDateTime_test-module
 • Call the POST recurring-payments endpoint
 • Expect 422 PAGAMENTO_DIVERGENTE_CONSENTIMENTO - Validate Error Message
 • Call the GET recurring-consents endpoint
-• Expect 200 - Validate Response and ensure status is AUTHORISED",,
-automatic-payments_test-plan_v2,automatic-payments_api_sweeping-accounts-consents-core_test-module_v2,"Ensure a consent for sweeping accounts can be successfully created and authorized. This test will also guarantee that a consent does not expire after 5 minutes under the AWAITING_AUTHORISATION status.
+• Expect 200 - Validate Response and ensure status is AUTHORISED"
+automatic-payments_test-plan_v2;automatic-payments_api_sweeping-accounts-consent-edition_test-module_v2;"Ensure consent edition cannot be executed at sweeping accounts consent
+
+• Call the POST recurring-consents endpoint with sweeping Accounts fields, with expirationDateTime as D+180
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the PATCH recurring-consents endpoint with consent edition, with expirationDateTime as D+270
+• Expect 422 CAMPO_NAO_PERMITIDO - Validate Response
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure the fields have not been updated as sent at the PATCH request"
+automatic-payments_test-plan_v2;automatic-payments_api_sweeping-accounts-consents-core_test-module_v2;"Ensure a consent for sweeping accounts can be successfully created and authorized. This test will also guarantee that a consent does not expire after 5 minutes under the AWAITING_AUTHORISATION status.
 • Call the POST recurring-consents endpoint with sweeping accounts data, filling all fields for periodic limits
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Set the Conformance Suite to sleep for 7 minutes
@@ -88,8 +100,8 @@ automatic-payments_test-plan_v2,automatic-payments_api_sweeping-accounts-consent
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Redirect the user to authorize consent
 • Call the GET recurring-consents endpoint
-• Expect 201 - Validate Response and ensure status is AUTHORISED",PSV-269,
-automatic-payments_test-plan_v2,automatic-payments_api_sweeping-accounts-core_test-module_v2,"Ensure a Payment for sweeping accounts can be successfully authorized and executed. Afterwards, check that a consent is expired if the amount is reached. If a brazilCpf or brazilCnpj is informed at the config, these fields will be used at both the loggedUser/businessEntity and Creditor. If not, the institution will be required to have an account registered with the CPF 99991111140.
+• Expect 201 - Validate Response and ensure status is AUTHORISED"
+automatic-payments_test-plan_v2;automatic-payments_api_sweeping-accounts-core_test-module_v2;"Ensure a Payment for sweeping accounts can be successfully authorized and executed. Afterwards, check that a consent is expired if the amount is reached. If a brazilCpf or brazilCnpj is informed at the config, these fields will be used at both the loggedUser/businessEntity and Creditor. If not, the institution will be required to have an account registered with the CPF 99991111140.
 • Call the POST recurring-consents endpoint with sweeping accounts fields, the amount value as 600.00,  not sending the field expirationDateTime
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Call the GET recurring-consents endpoint
@@ -108,34 +120,14 @@ automatic-payments_test-plan_v2,automatic-payments_api_sweeping-accounts-core_te
 • Call the GET {recurringConsentId} endpoint
 • Expect 200 - Validate response and ensure status is CONSUMED
 • Call the GET recurring-payments sending the recurringConsentID on the header
-• Expect 200 - Validate Response and both paymentIDs are retrieved, with the correct status for it (ACSC)",,
-automatic-payments_test-plan_v2,automatic-payments_api_sweeping-accounts-invalid-cnpj_test-module_v2,"Ensure a consent for cannot be created if there are two creditors that are not from the same company. The test will be skipped if no Business Entity CNPJ is provided.
-• Call the POST recurring-consents endpoint with sweeping accounts fields, sending 2 creditors at the creditors field, changing the last five numbers from a valid CNPJ
-• Expect 422 PARAMETRO_INVALIDO - Validate Error Message",,
-automatic-payments_test-plan_v2,automatic-payments_api_sweeping-accounts-invalid-creditor_test-module_v2,"Ensure a consent for sweeping accounts cannot be created with invalid creditor account fields
+• Expect 200 - Validate Response and both paymentIDs are retrieved, with the correct status for it (ACSC)"
+automatic-payments_test-plan_v2;automatic-payments_api_sweeping-accounts-invalid-cnpj_test-module_v2;"Ensure a consent cannot be created if there are two creditors that are not from the same company. The test will be skipped if no Business Entity CNPJ is provided.
+• Call the POST recurring-consents endpoint with sweeping accounts fields, sending 2 creditors at the creditors field, changing the numbers from a valid CNPJ
+• Expect 422 DETALHE_PAGAMENTO_INVALIDO - Validate Error Message"
+automatic-payments_test-plan_v2;automatic-payments_api_sweeping-accounts-invalid-creditor_test-module_v2;"Ensure a consent for sweeping accounts cannot be created with invalid creditor account fields
 • Call the POST recurring-consents endpoint with sweeping accounts fields, sending the logged user as provided on the config, and the creditor as a different one
-• Expect 422 PARAMETRO_INVALIDO - Validate Error Message",,
-automatic-payments_test-plan_v2,automatic-payments_api_sweeping-accounts-totalAllowedAmount_test-module_v2,"Ensure a Payment for sweeping accounts cannot be executed if its above the totalAllowedAmount defined on consent creation. If a brazilCpf or brazilCnpj is informed at the config, these fields will be used at both the loggedUser/businessEntity and Creditor. If not, the institution will be required to have an account registered with the CPF 99991111140.
-• Call the POST recurring-consents endpoint with sweeping accounts fields, the totalAllowedAmount value as 1.00,  not sending the field startDateTime or any other limits
-• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
-• Redirect the user to authorize consent
-• Call the GET recurring-consents endpoint
-• Expect 200 - Validate Response and ensure status is AUTHORISED
-• Call the POST recurring-payments endpoint with the amount as 0.60 to the selected creditor
-• Expect 201 - Validate Response
-• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
-• Call the GET recurring-payments {recurringPaymentId}
-• Expect 200 - Validate Response and ensure status is ACSC
-• Call the POST recurring-payments endpoint with the amount as 0.60 to the selected creditor
-• Expect 422 LIMITE_VALOR_TOTAL_CONSENTIMENTO_EXCEDIDO or 201 - Validate Response
-If a 201 is returned:
-• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
-• Call the GET recurring-payments {recurringPaymentId}
-• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is LIMITE_VALOR_TOTAL_CONSENTIMENTO_EXCEDIDO
-
-• Call the GET {recurringConsentId} endpoint
-• Expect 200 - Validate Response and ensure status is AUTHORISED",,
-automatic-payments_test-plan_v2,automatic-payments_api_sweeping-accounts-limits_test-module_v2,"Ensure a Payment for sweeping accounts cannot be executed if its above the established limits in different scenarios. If a brazilCpf or brazilCnpj is informed at the config, these fields will be used at both the loggedUser/businessEntity and Creditor. If not, the institution will be required to have an account registered with the CPF 99991111140.
+• Expect 422 DETALHE_PAGAMENTO_INVALIDO - Validate Error Message"
+automatic-payments_test-plan_v2;automatic-payments_api_sweeping-accounts-limits_test-module_v2;"Ensure a Payment for sweeping accounts cannot be executed if its above the established limits in different scenarios. If a brazilCpf or brazilCnpj is informed at the config, these fields will be used at both the loggedUser/businessEntity and Creditor. If not, the institution will be required to have an account registered with the CPF 99991111140.
 • Call the POST recurring-consents endpoint with sweeping accounts fields, sending the sweeping.transactionLimit value as 400.00, sweeping.periodicLimits.day.transactionLimit as 500.00 and sweeping.periodicLimits.day.quantityLimit as 2
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Call the GET recurring-consents endpoint
@@ -173,8 +165,8 @@ If a 201 is returned:
 If a 201 is returned:
 　∘ Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
 　∘ Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is LIMITE_PERIODO_QUANTIDADE_EXCEDIDO
-",,
-automatic-payments_test-plan_v2,automatic-payments_api_sweeping-accounts-root-cnpj_test-module_v2,"Ensure a payment using sweeping account can be successfully executed when the creditors are all from the same company. This test will always use the following CNPJ 98380199000125 as proxy and businessEntityIdentification when creating the payment, and not considering what is informed on this field on the config, although if this field is not informed the test will be skipped. Therefore the 98380199000125 should be registered in the ASPSP for a successful test run.
+"
+automatic-payments_test-plan_v2;automatic-payments_api_sweeping-accounts-root-cnpj_test-module_v2;"Ensure a payment using sweeping account can be successfully executed when the creditors are all from the same company. This test will always use the following CNPJ 98380199000125 as proxy and businessEntityIdentification when creating the payment, and not considering what is informed on this field on the config, although if this field is not informed the test will be skipped. Therefore the 98380199000125 should be registered in the ASPSP for a successful test run.
 • Call the POST recurring-consents endpoint with sweeping accounts fields, sending the creditor account with 4 cnpjs, all of them containing the same root
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Call the GET recurring-consents endpoint
@@ -184,8 +176,28 @@ automatic-payments_test-plan_v2,automatic-payments_api_sweeping-accounts-root-cn
 • Expect 201 - Validate Response and ensure status is AUTHORISED
 • Call the POST recurring-payments endpoint , and the creditor as the first cnpj
 • Expect 201 - Validate Response
-• Repeat the payments process and validation, but now sending the creditor with a different cnpj sent at the consent",,
-automatic-payments_test-plan_v2,automatic-payments_api_sweeping-accounts-wrong-creditor_test-module_v2,"Ensure a payment cannot be executed for a creditor different from the one registered at the consent
+• Repeat the payments process and validation, but now sending the creditor with a different cnpj sent at the consent"
+automatic-payments_test-plan_v2;automatic-payments_api_sweeping-accounts-totalAllowedAmount_test-module_v2;"Ensure a Payment for sweeping accounts cannot be executed if its above the totalAllowedAmount defined on consent creation. If a brazilCpf or brazilCnpj is informed at the config, these fields will be used at both the loggedUser/businessEntity and Creditor. If not, the institution will be required to have an account registered with the CPF 99991111140.
+• Call the POST recurring-consents endpoint with sweeping accounts fields, the totalAllowedAmount value as 1.00, not sending the field startDateTime or any other limits
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 200 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the amount as 0.60 to the selected creditor
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the POST recurring-payments endpoint with the amount as 0.60 to the selected creditor
+• Expect 422 LIMITE_VALOR_TOTAL_CONSENTIMENTO_EXCEDIDO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is LIMITE_VALOR_TOTAL_CONSENTIMENTO_EXCEDIDO
+
+• Call the GET {recurringConsentId} endpoint
+• Expect 200 - Validate Response and ensure status is AUTHORISED"
+automatic-payments_test-plan_v2;automatic-payments_api_sweeping-accounts-wrong-creditor_test-module_v2;"Ensure a payment cannot be executed for a creditor different from the one registered at the consent
 • Call the POST recurring-consents endpoint with sweeping accounts fields, sending the creditor account as the CPF informed at the config, the amount value as 600.00
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Call the GET recurring-consents endpoint
@@ -193,29 +205,35 @@ automatic-payments_test-plan_v2,automatic-payments_api_sweeping-accounts-wrong-c
 • Redirect the user to authorize consent
 • Call the GET recurring-consents endpoint
 • Expect 201 - Validate Response and ensure status is AUTHORISED
+
 • Call the POST recurring-payments endpoint with the amount as 300.00, but with a different document information
-• Expect 422 PAGAMENTO_DIVERGENTE_CONSENTIMENTO - Validate Error Message
+• Expect 422 PAGAMENTO_DIVERGENTE_CONSENTIMENTO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is PAGAMENTO_DIVERGENTE_CONSENTIMENTO
+
 • Call the POST recurring-payments endpoint with the amount as 300.00, but with a different creditor proxy, but the correct creditorAccount information
-• Expect 422 PAGAMENTO_DIVERGENTE_CONSENTIMENTO - Validate Error Message
+• Expect 422 PAGAMENTO_DIVERGENTE_CONSENTIMENTO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is PAGAMENTO_DIVERGENTE_CONSENTIMENTO
+
 • Call the POST recurring-payments endpoint with the amount as 300.00, but with a different creditorAccount information, but the correct proxy
-• Expect 422 PAGAMENTO_DIVERGENTE_CONSENTIMENTO - Validate Error Message
+• Expect 422 PAGAMENTO_DIVERGENTE_CONSENTIMENTO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is PAGAMENTO_DIVERGENTE_CONSENTIMENTO
+
 • Call the POST recurring-payments endpoint with the amount as 300.00, but without sending the creditorAccount information
 • Expect 422 PARAMETRO_NAO_INFORMADO - Validate Error Message
-• Call the GET recurring-consents endpoint
-• Expect 201 - Validate Response and ensure status is AUTHORISED",,
-automatic-payments_test-plan_v2,automatic-payments_api_sweeping-accounts-consent-edition_test-module_v2,"Ensure consent edition cannot be executed at sweeping accounts consent
 
-· Call the POST recurring-consents endpoint with sweeping Accounts fields, with startDateTime as D+10 and expirationDateTime as D+180
-· Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
-· Redirect the user to authorize consent
-· Call the GET recurring-consents endpoint
-· Expect 201 - Validate Response and ensure status is AUTHORISED
-· Call the PATCH recurring-consents endpoint with consent edition, startDateTime as D+5, and expirationDateTime as D+270
-· Expect 422 CAMPO_NAO_PERMITIDO  - Validate Response and ensure status is AUTHORISED
-· Call the GET recurring-consents endpoint
-· Expect 201 - Validate Response and ensure the fields have not been updated as sent at the PATCH request",,
-automatic-payments-timezone_test-plan_v2,automatic-payments_api_timezone_test-module_v2,"Ensure payment reaches an accepted state when executed between 9pm UTC-3 and 11:59pm UTC-3. To ensure that the server can process the date, which is set as UTC-3, this test must be executed between 9pm UTC-3 and 11:59pm UTC-3.  If a brazilCpf or brazilCnpj is informed at the config, these fields will be used at both the loggedUser/businessEntity and Creditor. If not, the institution will be required to have an account registered with the CPF 99991111140.
-• Call the POST recurring-consents endpoint with sweeping accounts fields, sending startDateTime as now + 1 hour (UTC)
+• Call the GET recurring-consents endpoint
+• Expect 200 - Validate Response and ensure status is AUTHORISED"
+automatic-payments-timezone_test-plan_v2;automatic-payments_api_timezone_test-module_v2;"Ensure payment reaches an accepted state when executed between 9pm UTC-3 and 11:59pm UTC-3. To ensure that the server can process the date, which is set as UTC-3, this test must be executed between 9pm UTC-3 and 11:59pm UTC-3.  If a brazilCpf or brazilCnpj is informed at the config, these fields will be used at both the loggedUser/businessEntity and Creditor. If not, the institution will be required to have an account registered with the CPF 99991111140.
+• Call the POST recurring-consents endpoint with sweeping accounts fields, sending startDateTime as now (UTC)
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Call the GET recurring-consents endpoint
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
@@ -226,15 +244,16 @@ automatic-payments-timezone_test-plan_v2,automatic-payments_api_timezone_test-mo
 • Expect 201 - Validate Response
 • Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
 • Call the GET recurring-payments {recurringPaymentId}
-• Expect 200 - Validate Response and ensure status is ACSC• Validate if the current time is set between 9pm UTC-3 and 11:59pm UTC-3 - Return failure if not as defined on the test summary",,
-automatic-payments-webhook_test-plan_v2,automatic-payments_api_webhook-acsc_test-module_v2,"Ensure that the tested institution has correctly implemented the webhook notification endpoint and that this endpoint is correctly called when a payments reaches the ACSC, and teh consent reaches the CONSUMED state
-For this test the institution will need to register on it’s software statement a webhook under the following format - https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>
+• Expect 200 - Validate Response and ensure status is ACSC
+• Validate if the current time is set between 9pm UTC-3 and 11:59pm UTC-3 - Return failure if not as defined on the test summary"
+automatic-payments-webhook_test-plan_v2;automatic-payments_api_webhook-acsc_test-module_v2;"Ensure that the tested institution has correctly implemented the webhook notification endpoint and that this endpoint is correctly called when a payments reaches the ACSC, and teh consent reaches the CONSUMED state
+For this test the institution will need to register on it’s software statement a webhook under the following format - https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;
 • Obtain a SSA from the Directory
-• Ensure that on the SSA the attribute software_api_webhook_uris contains the URI https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>, where the alias is to be obtained from the field alias on the test configuration
-• Call the Registration Endpoint, also sending the field ""webhook_uris"":[“https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>”]
+• Ensure that on the SSA the attribute software_api_webhook_uris contains the URI https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;, where the alias is to be obtained from the field alias on the test configuration
+• Call the Registration Endpoint, also sending the field ""webhook_uris"":[“https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;”]
 • Expect a 201 - Validate Response
 • Set the test to wait for X seconds, where X is the time in seconds provided on the test configuration for the attribute webhookWaitTime. If no time is provided, X is defaulted to 600 seconds
-• Set the recurring consents webhook notification endpoint to be equal to https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>/open-banking/webhook/v1/automatic-payments/v1/recurring-consents/{recurringConsentId}, where the alias is to be obtained from the field alias on the test configuration
+• Set the recurring consents webhook notification endpoint to be equal to https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;/open-banking/webhook/v2/automatic-payments/v2/recurring-consents/{recurringConsentId}, where the alias is to be obtained from the field alias on the test configuration
 • Calls POST recurring-consents Endpoint with sweeping accounts information, and the field  recurringConfigurations.swepping.amount as 300
 • Expects 201 - Validate Response
 • Redirects the user to authorize the created consent
@@ -242,7 +261,7 @@ For this test the institution will need to register on it’s software statement
 • Expects 200 - Validate if status is ""AUTHORISED""
 • Calls the POST recurring-payments with one of the selected creditors, and 300 as the payment amount
 • Expects 201 - Validate response
-• Set the recurring payments webhook notification endpoint to be equal to https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>/open-banking/webhook/v1/automatic-payments/v1/pix/recurring-payments/{recurringPaymentId} where the alias is to be obtained from the field alias on the test configuration
+• Set the recurring payments webhook notification endpoint to be equal to https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;/open-banking/webhook/v2/automatic-payments/v2/pix/recurring-payments/{recurringPaymentId} where the alias is to be obtained from the field alias on the test configuration
 • Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
 • Call the GET recurring-payments {recurringPaymentId}
 • Expect 200 - Validate Response and ensure status is ACSC
@@ -251,15 +270,15 @@ For this test the institution will need to register on it’s software statement
 • Expect an incoming message, one for each defined endpoint, payments and consents, both which  must be mtls protected and can be received on any endpoint at any order - Wait 60 seconds for both messages to be returned
 • For both webhook calls - Return a 202 - Validate the contents of the incoming message, including the presence of the x-webhook-interaction-id header and that the timestamp value is within  now and the start of the test
 • Call the Delete Registration Endpoint
-• Expect a 204 - No Content",,
-automatic-payments-webhook_test-plan_v2,automatic-payments_api_webhook-multiple-consents_test-module_v2,"Ensure that the tested institution has correctly implemented the webhook notification endpoint and that this endpoint is correctly called when a consent reaches the AUTHORISED state, if this is realetd to a multiple consents account. This test will use the CPF/CNPJ on the config for ""Payment consent -  XXX - Multiple Consents Test"", or Skipped if the field is not filled. The CPF/CNPJ informed will also be sent at the creditor account.
-For this test the institution will need to register on it’s software statement a webhook under the following format - https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>
+• Expect a 204 - No Content"
+automatic-payments-webhook_test-plan_v2;automatic-payments_api_webhook-multiple-consents_test-module_v2;"Ensure that the tested institution has correctly implemented the webhook notification endpoint and that this endpoint is correctly called when a consent reaches the AUTHORISED state, if this is realetd to a multiple consents account. This test will use the CPF/CNPJ on the config for ""Payment consent -  XXX - Multiple Consents Test"", or Skipped if the field is not filled. The CPF/CNPJ informed will also be sent at the creditor account.
+For this test the institution will need to register on it’s software statement a webhook under the following format - https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;
 • Obtain a SSA from the Directory
-• Ensure that on the SSA the attribute software_api_webhook_uris contains the URI https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>, where the alias is to be obtained from the field alias on the test configuration
-• Call the Registration Endpoint, also sending the field ""webhook_uris"":[“https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>”]
+• Ensure that on the SSA the attribute software_api_webhook_uris contains the URI https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;, where the alias is to be obtained from the field alias on the test configuration
+• Call the Registration Endpoint, also sending the field ""webhook_uris"":[“https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;”]
 • Expect a 201 - Validate Response
 • Set the test to wait for X seconds, where X is the time in seconds provided on the test configuration for the attribute webhookWaitTime. If no time is provided, X is defaulted to 600 seconds
-• Set the recurring consents webhook notification endpoint to be equal to https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>/open-banking/webhook/v1/automatic-payments/v1/recurring-consents/{recurringConsentId}, where the alias is to be obtained from the field alias on the test configuration
+• Set the recurring consents webhook notification endpoint to be equal to https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;/open-banking/webhook/v2/automatic-payments/v2/recurring-consents/{recurringConsentId}, where the alias is to be obtained from the field alias on the test configuration
 • Call the POST recurring-consents endpoint with sweeping accounts fields, with the Multiple Accounts CPF/CNPJ
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Redirect the user to authorize consent
@@ -272,18 +291,20 @@ For this test the institution will need to register on it’s software statement
 • Expect 201 - Validate Response and ensure status is AUTHORISED
 • Call the POST recurring-payments endpoint with the selected creditor
 • Expect 201 - Validate Response
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is CONSUMED
 • Expect an incoming message, the defined consents endpoint, which  must be mtls protected - Wait 60 seconds for the messages to be returned
 • For the webhook calls - Return a 202 - Validate the contents of the incoming message, including the presence of the x-webhook-interaction-id header and that the timestamp value is within now and the start of the test
 • Call the Delete Registration Endpoint
-• Expect a 204 - No Content",,
-automatic-payments-webhook_test-plan_v2,automatic-payments_api_webhook-rejected_test-module_v2,"Ensure that the tested institution has correctly implemented the webhook notification endpoint and that this endpoint is correctly called when a consent reaches the REJECTED state
-For this test the institution will need to register on it’s software statement a webhook under the following format - https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>
+• Expect a 204 - No Content"
+automatic-payments-webhook_test-plan_v2;automatic-payments_api_webhook-rejected_test-module_v2;"Ensure that the tested institution has correctly implemented the webhook notification endpoint and that this endpoint is correctly called when a consent reaches the REJECTED state
+For this test the institution will need to register on it’s software statement a webhook under the following format - https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;
 • Obtain a SSA from the Directory
-• Ensure that on the SSA the attribute software_api_webhook_uris contains the URI https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>, where the alias is to be obtained from the field alias on the test configuration
-• Call the Registration Endpoint, also sending the field ""webhook_uris"":[“https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>”]
+• Ensure that on the SSA the attribute software_api_webhook_uris contains the URI https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;, where the alias is to be obtained from the field alias on the test configuration
+• Call the Registration Endpoint, also sending the field ""webhook_uris"":[“https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;”]
 • Expect a 201 - Validate Response
 • Set the test to wait for X seconds, where X is the time in seconds provided on the test configuration for the attribute webhookWaitTime. If no time is provided, X is defaulted to 600 seconds
-• Set the recurring consents webhook notification endpoint to be equal to https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>/open-banking/webhook/v1/automatic-payments/v1/recurring-consents/{recurringConsentId}, where the alias is to be obtained from the field alias on the test configuration
+• Set the recurring consents webhook notification endpoint to be equal to https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;/open-banking/webhook/v2/automatic-payments/v2/recurring-consents/{recurringConsentId}, where the alias is to be obtained from the field alias on the test configuration
 • Call the POST recurring-consents endpoint with sweeping accounts fields
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Call the GET recurring-consents endpoint
@@ -296,4 +317,576 @@ For this test the institution will need to register on it’s software statement
 • For the webhook calls - Return a 202 - Validate the contents of the incoming message, including the presence of the x-webhook-interaction-id header and that the timestamp value is within now and the start of the test
 • Call the Delete Registration Endpoint
 • Expect a 204 - No Content
-",,
+"
+automatic-payments-webhook_test-plan_v2;automatic-payments_api_webhook-revoked_test-module_v2;"Ensure that the tested institution has correctly implemented the webhook notification endpoint and that this endpoint is correctly called when a consent reaches the REVOKED state
+For this test the institution will need to register on it’s software statement a webhook under the following format - https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;
+• Obtain a SSA from the Directory
+• Ensure that on the SSA the attribute software_api_webhook_uris contains the URI https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;, where the alias is to be obtained from the field alias on the test configuration
+• Call the Registration Endpoint, also sending the field ""webhook_uris"":[“https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;”]
+• Expect a 201 - Validate Response
+• Set the test to wait for X seconds, where X is the time in seconds provided on the test configuration for the attribute webhookWaitTime. If no time is provided, X is defaulted to 600 seconds
+• Set the recurring consents webhook notification endpoint to be equal to https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;/open-banking/webhook/v2/automatic-payments/v2/recurring-consents/{recurringConsentId}, where the alias is to be obtained from the field alias on the test configuration
+• Call the POST recurring-consents endpoint with sweeping accounts fields and a infinite consent, not sending the exspirationDateTime field
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the PATCH {recurringConsentId} endpoint with  status as REVOKED, rejectedBy is USUARIO, rejectedFrom is INICIADORA and reason.code is REVOGADO_USUARIO
+• Expect 200 - Validate Message
+• all the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure  status as REVOKED, rejectedBy is USUARIO, rejectedFrom is INICIADORA and reason.code is REVOGADO_USUARIO
+• Expect an incoming message, the defined consents endpoint, which  must be mtls protected - Wait 60 seconds for the messages to be returned
+• For the webhook calls - Return a 202 - Validate the contents of the incoming message, including the presence of the x-webhook-interaction-id header and that the timestamp value is within now and the start of the test
+• Call the Delete Registration Endpoint
+• Expect a 204 - No Content
+"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-anual-core_test-module_v2;"Ensure a annual payment for automatic pix can be succefully authorized, executed and cancelled afterwards.
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as ANUAL, a fixed Amount of 0.50 BRL, and sending firstPayment information with amount as 1 BRL, date as D+0
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the POST recurring-payments endpoint with the a payment for D+2, and amount as 0.5 BRL
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD
+• Call the PATCH recurring-payments {recurringPaymentId} endpoint
+• Expect 201 - Validate Response
+• Call the GET recurring-payments sending the recurringConsentID on the header
+• Expect 200 - Validate Response and both paymentIDs are retrieved, with the correct status for it, as ACSC and CANC"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-consent-edition-account-holder_test-module_v2;"Ensure that consent edition can be performed by the account holder. This test requires action from the tester. It will poll for 10 minutes, waiting for the 'maximumVariableAmount' field to be defined and for changes to the 'useOverDraftLimit' setting. This test will required that the useOverDraftLimit is set as true on user redirection.
+
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+2, expirationDateTime as D+180, interval as SEMANAL, without sending fixedAmount, maximumVariableAmount or minimumVariableAmount
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED, and check that the value of useOverDraftLimit is true
+• Poll the the GET recurring-consents endpoint while the maximumVariableAmount is not sent back or for 10 minutes
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate response, ensure status is AUTHORISED and and ensure that fields maximumVariableAmount is defined, and that useOverDraftLimit is false, and that the field updatedAtDateTime has been updated
+• Call the POST recurring-payments endpoint with amount as 1 BRL above the maximumVariableAmount, and date as D+2
+• Expect 422 LIMITE_VALOR_TRANSACAO_CONSENTIMENTO_EXCEDIDO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is LIMITE_VALOR_TRANSACAO_CONSENTIMENTO_EXCEDIDO"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-consent-edition-negative_test-module_v2;"Ensure consent edition can not be applied if it goes against any of the defined business rules
+
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, sending the expirationDateTime as D+180, interval as SEMANAL, sending fixedAmount and not sending the maximumVariableAmount, minimumVariableAmount, and firstPayment information
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the PATCH recurring-consents endpoint with consent edition, sending creditor name as ""Openflix"", expirationDateTime as D-1 and not sending the maximumVariableAmount
+• Expect 422 DETALHE_EDICAO_INVALIDO - Validate Response
+• Call the PATCH recurring-consents endpoint with consent edition, sending creditor name as ""Openflix"", not sending the expirationDateTime and sending the maximumVariableAmount as 0.3 BRL
+• Expect 422 CAMPO_NAO_PERMITIDO - Validate Response
+• Call the PATCH recurring-consents endpoint with consent edition, sending creditor name as ""Openflix"", not sending the expirationDateTime or maximumVariableAmount, and not sending the loggedUser
+• Expect 422 CAMPO_NAO_PERMITIDO - Validate Response
+• Call the PATCH recurring-consents endpoint with consent edition, sending creditor name as ""Openflix"", expirationDateTime as D+1, not sending the maximumVariableAmount and not sending riskSignals
+• Expect 422 FALTAM_SINAIS_OBRIGATORIOS_PLATAFORMA - Validate Response"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-consent-edition-permissive_test-module_v2;"Ensure consent edition can be applied to make limits more permissive
+
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, expirationDateTime as D+180, interval as SEMANAL, a maximumVariableAmount of 0.25 BRL, and not sending firstPayment information
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the PATCH recurring-consents endpoint with consent edition, sending creditor name as ""Openflix"", not sending the expirationDateTime field, and maximumVariableAmount as 0.5 BRL
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate response, ensure status is AUTHORISED and and ensure that fields are as the PATCH Request, and that the field updatedAtDateTime has been updated
+• Call the POST recurring-payments endpoint with amount as 0.3 BRL, and date as D+2
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-consent-edition-restrictive_test-module_v2;"Ensure consent edition can be applied to make more restrictive limits
+
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, not sending the expirationDateTime, interval as SEMANAL, a maximumVariableAmount of 0.50 BRL, and not sending firstPayment information
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the PATCH recurring-consents endpoint with consent edition, sending creditor name as ""Openflix"" and expirationDateTime as D+0
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with amount as 0.30 BRL, date as D+2
+• Expect 201 - Validate Response
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate response, ensure status is AUTHORISED and and ensure that fields are as the PATCH Request, and that the field updatedAtDateTime has been updated
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is CANC
+• Call the POST recurring-payments endpoint with amount as 0.20 BRL, date as D+2
+• Expect 422 FORA_PRAZO_PERMITIDO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is FORA_PRAZO_PERMITIDO"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-failed-firstPayment_test-module_v2;"Ensure a payment can be scheduled even when the firstPayment has failed 
+
+• Call the POST recurring-consents endpoint with automatic pix fields, with startDateTime as D+1, interval as SEMANAL, a fixed Amount of 0.5 BRL, and sending firstPayment with amount as 1 BRL, date as D+0
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the amount as 0.5 BRL and date as D+0
+• Expect 422 PAGAMENTO_DIVERGENTE_CONSENTIMENTO or 201 - Validate Response
+
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT
+
+• Call the POST recurring-payments endpoint with the a payment for D+2, and amount as 0.5 BRL
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD
+• Call the GET recurring-payments sending the recurringConsentID on the header
+Expect 200 - Validate Response and that at least one paymentID is retrieved, with the correct status for it as SCHD"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-firstPayment-invalid-creditor_test-module_v2;"Ensure a firstPayment cannot be executed with a different account
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as SEMANAL, a fixed Amount of 0.50 BRL, and sending firstPayment information with amount as 1 BRL, date as D+1
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload, but a different creditorAccount Number
+• Expect 422 PAGAMENTO_DIVERGENTE_CONSENTIMENTO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is PAGAMENTO_DIVERGENTE_CONSENTIMENTO
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-fixedAmount_test-module_v2;"Ensure a payment cannot be executed if different from the fixedAmount
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as SEMANAL, a fixed Amount of 0.50 BRL, and sending firstPayment information with amount as 1 BRL, date as D+0
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the POST recurring-payments endpoint with an amount of 1 BRL, and date as D+4
+• Expect 422 PAGAMENTO_DIVERGENTE_CONSENTIMENTO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is PAGAMENTO_DIVERGENTE_CONSENTIMENTO"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-invalid-creditor_test-module_v2;"Ensure a consent for automatic pix cannot be created with invalid creditors fields
+• Call the POST recurring-consents endpoint with automatic pix fields, sending two PJ accounts at the creditor information
+• Expect 422 DETALHE_PAGAMENTO_INVALIDO - Validate Error Message
+• Call the POST recurring-consents endpoint with automatic pix fields, sending a PF at the creditor information
+• Expect 422 DETALHE_PAGAMENTO_INVALIDO - Validate Error Message"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-invalid-dates-later_test-module_v2;"Ensure a Payment cannot be executed if done after D+10
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as SEMANAL, a fixed Amount of 0.50 BRL, and sending firstPayment information with amount as 1 BRL, date as D+0
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the POST recurring-payments endpoint with date as D+11
+• Expect 422 FORA_PRAZO_PERMITIDO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is FORA_PRAZO_PERMITIDO"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-invalid-dates-sooner_test-module_v2;"Ensure a Payment cannot be executed if done before D+2
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as SEMANAL, a fixed Amount of 0.50 BRL, and sending firstPayment information with amount as 1 BRL, date as D+0
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the POST recurring-payments endpoint with date as D+1
+• Expect 422 FORA_PRAZO_PERMITIDO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is FORA_PRAZO_PERMITIDO"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-invalid-parameters_test-module_v2;"Ensure a consent cannot be created with invalid or missing fields
+• Call the POST recurring-consents endpoint with automatic pix fields, sending fixedAmount as a string ""1""
+• Expect 422 PARAMETRO_INVALIDO - Validate Error Message
+• Call the POST recurring-consents endpoint with automatic pix fields, and firstPayment date as D-1
+• Expect 422 DATA_PAGAMENTO_INVALIDA - Validate Error Message"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-maximumVariableAmount_test-module_v2;"Ensure a payment cannot be executed if higher than the maximumVariableAmount
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as SEMANAL, minimumVariableAmount of 0.5 BRL, maximumVariableAmount as 0.8 BRL and sending firstPayment information with amount as 1 BRL, date as D+0
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the POST recurring-payments endpoint with an amount of 1 BRL, and date as D+4
+• Expect 422 LIMITE_VALOR_TRANSACAO_CONSENTIMENTO_EXCEDIDO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is LIMITE_VALOR_TRANSACAO_CONSENTIMENTO_EXCEDIDO"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-mensal-core_test-module_v2;"Ensure a monthly Payment for automatic pix can be successfully authorized, executed and cancelled afterwards.
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as MENSAL, a fixed Amount of 0.50 BRL, and sending firstPayment information with amount as 1 BRL, date as D+0
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the POST recurring-payments endpoint with the a payment for D+2, and amount as 0.5 BRL
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD
+• Call the PATCH recurring-payments {recurringPaymentId} endpoint
+• Expect 201 - Validate Response
+• Call the GET recurring-payments sending the recurringConsentID on the header
+• Expect 200 - Validate Response and both paymentIDs are retrieved, with the correct status for it, as ACSC and CANC"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-minimumVariableAmount_test-module_v2;"Ensure a payment can be executed if lower than the minimumVariableAmount
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as SEMANAL, not sending the maximumVariableAmount, minimumVariableAmount of 0.5 BRL, and sending firstPayment information with amount as 1 BRL, date as D+0
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the PATCH recurring-consents endpoint with consent edition, sending creditor name as ""Openflix"", not sending the expirationDateTime and sending the maximumVariableAmount as 0.3 BRL
+• Expect 422 DETALHE_EDICAO_INVALIDO - Validate Response
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the POST recurring-payments endpoint with an amount of 0.2 BRL, and date as D+4
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD
+• Call the PATCH recurring-payments {recurringPaymentId} endpoint
+• Expect 201 - Validate Response
+• Call the GET recurring-payments sending the recurringConsentID on the header
+• Expect 200 - Validate Response and both paymentIDs are retrieved, with the correct status for it, as ACSC and CANC"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-negative-consent_test-module_v2;"Ensure a consent cannot be created with fields not following the business rules
+• Call the POST recurring-consents endpoint with automatic pix fields, sending fixedAmount as 1 BRL and maximumVariableAmount as 1 BRL
+• Expect 422 DETALHE_PAGAMENTO_INVALIDO - Validate Error Message
+• Call the POST recurring-consents endpoint with automatic pix fields, sending minimumVariableAmount as 1 BRL and maximumVariableAmount as 0.5 BRL
+• Expect 422 DETALHE_PAGAMENTO_INVALIDO - Validate Error Message"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-no-limits_test-module_v2;"Ensure a payment without limits or a first payment can be created and scheduled
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+2, expirationDateTime as D+180, interval as SEMANAL, a without sending fixedAmount, maximumVariableAmount, minimumVariableAmount and firstPaymentInformation
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the amount as 1 BRL, and date as D+3
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD
+• Call the POST recurring-payments endpoint with the a payment for D+10, and amount as 0.5 BRL
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD
+• Call the GET recurring-payments sending the recurringConsentID on the header
+• Expect 200 - Validate Response and both paymentIDs are retrieved, with the correct status for it, as SCHD and SCHD"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-referenceStartDate_test-module_v2;"Ensure a payment cannot be executed if done before the referenceStartDate
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+5, interval as SEMANAL, minimumVariableAmount of 0.5 BRL, maximumVariableAmount as 0.8 BRL and sending firstPayment information with amount as 1 BRL, date as D+0
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the POST recurring-payments endpoint with an amount of 0.5 BRL, date as D+4
+• Expect 422 PAGAMENTO_DIVERGENTE_CONSENTIMENTO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is PAGAMENTO_DIVERGENTE_CONSENTIMENTO"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-revoked_test-module_v2;"Ensure a scheduled payment is rejected when the consent is revoked
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as SEMANAL, a fixed Amount of 0.50 BRL, and sending firstPayment information with amount as 1 BRL, date as D+0
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the POST recurring-payments endpoint with the a payment for D+2, and amount as 0.5 BRL
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD
+• Call the PATCH recurring-consents endpoint
+• Expect 200 - Validate Response
+• Call the GET recurring-payments sending the recurringConsentID on the header
+• Expect 200 - Validate Response and both paymentIDs are retieved, with the correct status for it, as ACSC and RJCT, with rejectionReason as CONSENTIMENTO_REVOGADO"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-scheduled-firstPayment_test-module_v2;"Ensure a firstPayment can be scheduled to the future
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as SEMANAL, a fixed Amount of 0.50 BRL, and sending firstPayment information with amount as 1 BRL, date as D+1
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-scheduling-before-firstPayment_test-module_v2;"Ensure Payments can only be scheduled after the firstPayment
+
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as SEMANAL, a fixed Amount 0.5 BRL, and sending firstPayment information with amount as 1 BRL, date as D+30
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the an amount of 0.5 BRL, and date ad D+8
+• Expect 422 PAGAMENTO_DIVERGENTE_CONSENTIMENTO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is PAGAMENTO_DIVERGENTE_CONSENTIMENTO
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-semanal-core_test-module_v2;"Ensure a weekly Payment for automatic pix can be succefully authorized, executed and cancelled afterwards.
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as SEMANAL, a fixed Amount of 0.50 BRL, and sending firstPayment information with amount as 1 BRL, date as D+0
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the POST recurring-payments endpoint with the a payment for D+2, and amount as 0.5 BRL
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD
+• Call the PATCH recurring-payments {recurringPaymentId} endpoint
+• Expect 201 - Validate Response
+• Call the GET recurring-payments sending the recurringConsentID on the header
+• Expect 200 - Validate Response and both paymentIDs are retrieved, with the correct status for it, as ACSC and CANC"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-semestral-core_test-module_v2;"Ensure a biannual payment for automatic pix can be succefully authorized, executed and cancelled afterwards.
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as SEMESTRAL, a fixed Amount of 0.50 BRL, and sending firstPayment information with amount as 1 BRL, date as D+0
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the POST recurring-payments endpoint with the a payment for D+2, and amount as 0.5 BRL
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD
+• Call the PATCH recurring-payments {recurringPaymentId} endpoint
+• Expect 201 - Validate Response
+• Call the GET recurring-payments sending the recurringConsentID on the header
+• Expect 200 - Validate Response and both paymentIDs are retieved, with the correct status for it, as ACSC and CANC"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-trimestral-core_test-module_v2;"Ensure a quaterly payment for automatic pix can be succesfully authorized, executed and cancelled afterwards.
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as TRIMESTRAL, a fixed Amount of 0.50 BRL, and sending firstPayment information with amount as 1 BRL, date as D+0
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the POST recurring-payments endpoint with the a payment for D+2, and amount as 0.5 BRL
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD
+• Call the PATCH recurring-payments {recurringPaymentId} endpoint
+• Expect 201 - Validate Response
+• Call the GET recurring-payments sending the recurringConsentID on the header
+• Expect 200 - Validate Response and both paymentIDs are retieved, with the correct status for it, as ACSC and CANC"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-unmatching-creditor_test-module_v2;"	Ensure a payment can be scheduled if the creditorAccount is not for the informed creditor. The payment is only meant to fail on payment liquidation upon SPI consultation.
+	• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as SEMANAL, minimumVariableAmount of 0.5 BRL, maximumVariableAmount as 0.8 BRL and sending firstPayment information with amount as 1 BRL, date as D+0
+	• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+	• Redirect the user to authorize consent
+	• Call the GET recurring-consents endpoint
+	• Expect 201 - Validate Response and ensure status is AUTHORISED
+	• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+	• Expect 201 - Validate Response
+	• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+	• Call the GET recurring-payments {recurringPaymentId}
+	• Expect 200 - Validate Response and ensure status is ACSC
+	• Call the POST recurring-payments endpoint with an amount of 0.50 BRL, and date as D+4, and sending ispb as defined by the Central Bank and creditorAccount number as a random number
+	• Expect 201 - Validate Response
+"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-unmatching-loggedUser_test-module_v2;"Ensure the consent is REJECTED if the authorisation is performed by a LoggedUser that differs from the one provided in consent creation. For this test, the tester is expected to log in using information belonging to a different cpf during redirection.
+
+• Call the POST recurring-consents endpoint with automatic pix fields, with startDateTime as D+1, period as SEMANAL, minimumVariableAmount of 0.5 BRL, maximumVariableAmount as 0.8 BRL and sending firstPayment information with amount as 1 BRL, date as D+0, and loggedUser as the one informed in the config.
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirects the user to authorize the created consent - Expect Failure
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is AUTENTICACAO_DIVERGENTE"
+automatic-pix-payments_test-plan_v2;automatic-payments_api_automatic-pix-wrong-creditor_test-module_v2;"Ensure the first payment is not accepted if the creditorAccount is not for the informed creditor
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate as D+1, interval as SEMANAL, a fixed Amount 1 BRL, and sending firstPayment information with amount as 1 BRL, date as D+0, and random creditorAccount account number and ispb as defined by the Central Bank
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the amount as 1 BRL, and creditorAccount number and ispb as a defined at the consent
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is TITULARIDADE_INCONSISTENTE or PAGAMENTO_RECUSADO_SPI
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED"
+automatic-pix-payments-retry_test-plan_v2;automatic-payments_api_automatic-pix-extraday-core_test-module_v2;"This test will simulate an extraday retry after two failed payment. To achieve this, the test requires a pre-created and approved Consent ID, which should be configured in the ""Extraday Consent ID - Retry Accepted"" field, with two Failed Payment IDs, which will be retrieved during the test. The test will also need a refresh token linked to the client and user specified in the configuration. An access token derived from this refresh token will be used to make the payment, configured in the ""Extraday Refresh Token - Retry Accepted"" field. The pre-set consent must have isRetryAccepted set to true, and no firstPayment should be included.
+
+• Call the GET recurring-consents {recurringConsentId} endpoint, using the Extraday Consent ID Retry Accepted specified in the Config and a client_credentials token.
+• Expect a 200 response - Validate the response, ensure the status is ""Authorised"", isRetryAccepted is true, no firstPayment information is present.
+• Call the GET recurring-payment endpoint with the recurringConsent ID in the header.
+• Expect a 200 response - Validate the response, ensure there are two payments, the status is RJCT, and the payment date is set to before today or today, and that the rejectionReason expects a new E2EID.
+• Call the GET recurring-payments {recurringPaymentId} endpoint to fetch the original payment data.
+• Expect a 200 response - Validate the response and extract its fields.
+• Call the POST recurring-payments endpoint, using an access token derived from the refresh token in the configuration. Send a new E2EID, date as D+1, and the other fields with the same information as the previous payment, and include the first paymentId in originalRecurringPaymentId
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD
+• Call the PATCH recurring-payments {recurringPaymentId} endpoint
+• Expect 422 - PAGAMENTO_NAO_PERMITE_CANCELAMENTO"
+automatic-pix-payments-retry_test-plan_v2;automatic-payments_api_automatic-pix-extraday-retry-unaccepted_test-module_v2;"This test will simulate an extraday retry when a retry is not consented. To achieve this, the test requires a pre-created and approved Consent ID, which should be configured in the ""Extraday Consent ID - Retry Unaccepted"" field, which will be retrieved during the test. The test will also need a refresh token linked to the client and user specified in the configuration. An access token derived from this refresh token will be used to make the payment, configured in the ""Extraday Refresh Token - Retry Unaccepted"" field. The pre-set consent must have isRetryAccepted set to false, and no firstPayment should be included.
+
+• Call the GET recurring-consents {recurringConsentId} endpoint, using the Extraday Consent ID Retry Accepted specified in the Config and a client_credentials token.
+• Expect a 200 response - Validate the response, ensure the status is ""Authorised"", isRetryAccepted is false, no firstPayment information is present.
+• Call the GET recurring-payment endpoint with the recurringConsent ID in the header.
+• Expect a 200 response - Validate the response, ensure there are two payments, the status is RJCT, and the payment date is set to before today, and that the rejectionReason expects a new E2EID.
+• Call the GET recurring-payments {recurringPaymentId} endpoint to fetch the original payment data.
+• Expect a 200 response - Validate the response and extract its fields.
+• Call the POST recurring-payments endpoint, using an access token derived from the refresh token in the configuration. Send a new E2EID, date as D+1, and the other fields with the same information as the previous payment, and include the first paymentId in originalRecurringPaymentId.
+• Expect 422 PAGAMENTO_DIVERGENTE_CONSENTIMENTO or 201 - Validate Response
+
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is PAGAMENTO_DIVERGENTE_CONSENTIMENTO"
+automatic-pix-payments-retry_test-plan_v2;automatic-payments_api_automatic-pix-intraday-core_test-module_v2;"This test will simulate an intraday retry after a failed payment. To achieve this, the test requires a pre-created and approved Consent ID, which should be configured in the ""Intraday ConsentId - One Payment"" field, with a Failed Payment ID, which will be retrieved during the test. The test will also need a refresh token linked to the client and user specified in the configuration. An access token derived from this refresh token will be used to make the payment, configured in the ""Intraday Refresh Token - One Payment"" field. The pre-set consent must have isRetryAccepted set to false, and no firstPayment should be included. Given the expected time to resend the new E2EID, this test can be executed until 12pm BRL time.
+• Call the GET recurring-consents {recurringConsentId} endpoint, using the Intraday ConsentId One Payment specified in the Config and a client_credentials token
+• Expect a 200 response - Validate the response, ensure the status is ""Authorised"", isRetryAccepted is false, no firstPayment information is present
+• Call the GET recurring-payment endpoint with the recurringConsent ID in the header.
+• Expect a 200 response - Validate the response, ensure there is only one payment, the status is RJCT, the payment date is set to D+0, and that the rejectionReason expects a new E2EID
+• Call the GET recurring-payments {recurringPaymentId} endpoint to fetch the original payment data.
+• Expect a 200 response - Validate the response and extract its fields.
+• Call the POST recurring-payments endpoint, using an access token derived from the refresh token in the configuration. Send a new E2EID, date as D+0, and setting the amount as double of the original value,  and include the paymentId in originalRecurringPaymentId
+• Expect 422 DETALHE_TENTATIVA_INVALIDO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is DETALHE_TENTATIVA_INVALIDO
+• Call the POST recurring-payments endpoint, using an access token derived from the refresh token in the configuration. Send a new E2EID, date as D+0, and the other fields with the same information as the previous payment, and include the paymentId in originalRecurringPaymentId
+• Expect a 201 response - Validate the response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD
+• Validate if the current time is set between 00h00 am UTC-3 and 11:59am UTC-3 - Return failure if not as defined on the test summary"
+automatic-pix-payments-retry_test-plan_v2;automatic-payments_api_automatic-pix-intraday-timezone_test-module_v2;"This test will simulate an failed intraday retry after 12PM, with a previous intraday tentative. To achieve this, the test requires a pre-created and approved Consent ID, which should be configured in the ""Intraday ConsentId - Two Payments"" field, with two Failed Payment ID, which will be retrieved during the test. The test will also need a refresh token linked to the client and user specified in the configuration. An access token derived from this refresh token will be used to make the payment, configured in the ""Intraday Refresh Token - Two Payments"" field. The pre-set consent must have isRetryAccepted set to false, and no firstPayment should be included.
+• Call the GET recurring-consents {recurringConsentId} endpoint, using the Intraday ConsentId with Two Payments specified in the Config and a client_credentials token
+• Expect a 200 response - Validate the response, ensure the status is ""Authorised"", isRetryAccepted is false, no firstPayment information is present
+• Call the GET recurring-payment endpoint with the recurringConsent ID in the header
+• Expect a 200 response - Validate the response, ensure there are two payments, the status of each being RJCT, and the payments date is set to D+0, and that the rejectionReason expects a new E2EID
+• Call the GET recurring-payments {recurringPaymentId} endpoint to fetch the original payment data.
+• Expect a 200 response - Validate the response and extract its fields.
+• Call the POST recurring-payments endpoint, using an access token derived from the refresh token in the configuration. Send a new E2EID, date as D+0, and the other fields with the same information as the previous payment, and include the paymentId in originalRecurringPaymentId
+• Expect 422 FORA_PRAZO_PERMITIDO or 201 - Validate Response
+If a 201 is returned:
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is RJCT, ensure that rejectionReason.code is FORA_PRAZO_PERMITIDO
+• Validate if the current time is set between 12pm UTC-3 and 11:59pm UTC-3 - Return failure if not as defined on the test summary"
+automatic-pix-payments-retry-auxiliary_test-plan_v2;automatic-payments_api_automatic-pix_auxiliary-one-payment_test-module_v2;"This test module is an auxiliary test module, which will approve a consent, and then make one payment with the information specified at the configuration
+
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate, expirationDateTime, isRetryAccepted and interval as defined at the configuration, and not sending firstPayment information
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the amount and date defined at the configuration for payment 1
+• Expect 201 - Validate Response
+• Log the consentID, paymentID and refresh_token used"
+automatic-pix-payments-retry-auxiliary_test-plan_v2;automatic-payments_api_automatic-pix_auxiliary-two-payments_test-module_v2;"This test module is an auxiliary test module, which will approve a consent, and then make two payments with the information specified at the configuration
+
+• Call the POST recurring-consents endpoint with automatic pix fields, with referenceStartDate, expirationDateTime, isRetryAccepted and interval as defined at the configuration, and not sending firstPayment information
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the amount and date defined at the configuration for payment 1
+• Expect 201 - Validate Response
+• Call the POST recurring-payments endpoint with the amount and date defined at the configuration for payment 2
+• Expect 201 - Validate Response
+• Log the consentID, paymentIDs and refresh_token used"
+automatic-pix-payments-timezone_test-plan_v2;automatic-payments_api_automatic-pix-scheduled-firstPayment-timezone_test-module_v2;"Ensure firstPayment reaches an accepted state when executed between 9pm UTC-3 and 11:59pm UTC-3. To ensure that the server can process the date, which is set as UTC-3, this test must be executed between 9pm UTC-3 and 11:59pm UTC-3
+• Call the POST recurring-consents endpoint with automatic pix fields, with startDateTime as D+1, period as SEMANAL, a fixed Amount of 0.50 BRL, and sending firstPayment information with amount as 1 BRL, date as D+0
+• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
+• Redirect the user to authorize consent
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expect 201 - Validate Response
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD or ACCP
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the GET recurring-consents endpoint
+• Expect 201 - Validate Response and ensure status is AUTHORISED
+• Validate if the current time is set between 9pm UTC-3 and 11:59pm UTC-3 - Return failure if not as defined on the test summary"
+automatic-pix-payments-webhook_test-plan_v2;automatic-payments_api_automatic-pix-webhook_test-module_v2;"Ensure that the tested institution has correctly implemented the webhook notification endpoint and that this endpoint is correctly called when a payments reaches the SCHD
+For this test the institution will need to register on it’s software statement a webhook under the following format - https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;
+• Obtain a SSA from the Directory
+• Ensure that on the SSA the attribute software_api_webhook_uris contains the URI https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;, where the alias is to be obtained from the field alias on the test configuration
+• Call the Registration Endpoint, also sending the field ""webhook_uris"":[“https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;”]
+• Expect a 201 - Validate Response
+• Set the test to wait for X seconds, where X is the time in seconds provided on the test configuration for the attribute webhookWaitTime. If no time is provided, X is defaulted to 600 seconds
+• Set the recurring consents webhook notification endpoint to be equal to https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;/open-banking/webhook/v1/automatic-payments/v2/recurring-consents/{recurringConsentId}, where the alias is to be obtained from the field alias on the test configuration
+• Call the POST recurring-consents endpoint with automatic pix fields, with startDateTime as D+1, period as SEMANAL, a fixed Amount of 0.50 BRL, and sending firstPayment information with amount as 1 BRL, date as D+0
+• Expects 201 - Validate Response
+• Redirects the user to authorize the created consent
+• Call GET recurring-consents Endpoint
+• Expects 200 - Validate if status is ""AUTHORISED""
+• Call the POST recurring-payments endpoint with the information defined firstPayment payload
+• Expects 201 - Validate response
+• Set the recurring payments webhook notification endpoint to be equal to https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/&lt;alias&gt;/open-banking/webhook/v1/automatic-payments/v2/pix/recurring-payments/{recurringPaymentId} where the alias is to be obtained from the field alias on the test configuration
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is ACSC
+• Call the POST recurring-payments endpoint with the a payment for D+2, and amount as 0.5 BRL
+• Poll the GET recurring-payments {recurringPaymentId} while the Status is RCVD, ACCP or ACPD
+• Call the GET recurring-payments {recurringPaymentId}
+• Expect 200 - Validate Response and ensure status is SCHD
+• Call the PATCH recurring-payments {recurringPaymentId} endpoint
+• Expect 201 - Validate Response
+• Call the GET recurring-payments sending the recurringConsentID on the header
+Expect 200 - Validate Response and both paymentIDs are retrieved, with the correct status for it, as ACSC and CANC
+• Expect three incoming message, all on the same endpoint related to the three different status - ACSC, SCHD and CANC. All must be mtls protected and can be received on any order - Wait 60 seconds for the messages to be returned
+• For all webhook calls - Return a 202 - Validate the contents of the incoming message, including the presence of the x-webhook-interaction-id header and that the timestamp value is within  now and the start of the test
+• Call the Delete Registration Endpoint
+• Expect a 204 - No Content"
