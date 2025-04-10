@@ -1,0 +1,68 @@
+name: Gerar Planos de Teste Estruturados
+
+# Gatilhos: Quando este workflow deve rodar?
+on:
+  # Roda quando houver push para a branch 'main' E
+  # se houver mudanças nos arquivos de plano originais, config ou script
+  push:
+    branches:
+      - main # Ajuste para sua branch principal ou de desenvolvimento
+    paths:
+      - 'planos-originais/**'     # Ajuste o caminho para seus CSVs/TXTs originais
+      - 'configs/**.yaml'         # Ajuste o caminho para seus arquivos de configuração
+      - 'scripts/processador_testes.py' # Ajuste o caminho para o seu script Python
+
+  # Permite rodar manualmente pela interface do GitHub Actions
+  workflow_dispatch:
+
+jobs:
+  generate-and-commit:
+    runs-on: ubuntu-latest # Usa um runner Linux padrão do GitHub
+
+    steps:
+      # 1. Baixa o código do seu repositório para o runner
+      - name: Checkout código
+        uses: actions/checkout@v4 # Use a versão mais recente recomendada
+
+      # 2. Configura o ambiente Python
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' # Escolha a versão do Python que você usa
+
+      # 3. Instala as dependências Python
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt # Certifique-se que requirements.txt está no caminho correto
+
+      # 4. Executa o script para gerar os arquivos
+      #    Ajuste os caminhos para --config e --input conforme sua estrutura!
+      - name: Gerar arquivos JSON/YAML
+        run: |
+          python scripts/processador_testes.py --config configs/config_pix.yaml --input planos-originais/pix_automatico.csv
+          # Se tiver mais planos/configs, adicione mais linhas 'python ...' aqui
+          # Ex: python scripts/processador_testes.py --config configs/config_outra_api.yaml --input planos-originais/outra_api.csv
+
+      # 5. Verifica se houve mudanças nos arquivos gerados
+      - name: Verificar mudanças nos arquivos gerados
+        id: git-check
+        # Ajuste o caminho para o diretório de saída definido no seu config.yaml
+        run: |
+          git diff --quiet planos-gerados/ || echo "changed=true" >> $GITHUB_OUTPUT
+        # Este comando verifica se há diferenças no diretório de saída.
+        # Se houver, ele imprime "changed=true" que é capturado como output do step.
+
+      # 6. Commita e envia as mudanças (APENAS SE HOUVER MUDANÇAS)
+      - name: Commitar e Push arquivos gerados
+        # Só executa este passo se o passo anterior (git-check) detectou mudanças
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          # Ajuste o caminho para o diretório de saída
+          git add planos-gerados/*
+          git commit -m "Automated: Atualiza planos de teste estruturados [skip ci]"
+          # '[skip ci]' evita que este commit dispare o workflow novamente em loop
+          git push
+        # O token padrão GITHUB_TOKEN tem permissão para fazer push neste cenário
