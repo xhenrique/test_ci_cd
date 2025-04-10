@@ -1,0 +1,104 @@
+# --- Configurações do Arquivo CSV de Entrada ---
+csv_options:
+  # O delimitador usado no seu arquivo CSV/TXT
+  delimiter: ';'
+  # Codificação do arquivo (comum ser utf-8 ou latin-1)
+  encoding: 'utf-8'
+  # Nome do arquivo CSV/TXT a ser processado (pode ser sobrescrito por argumento de linha de comando)
+  default_input_file: 'José - Análise plano de testes - Pix Automatico.txt'
+
+# --- Mapeamento das Colunas do CSV ---
+# Mapeia os nomes padrão que o script usa para os nomes REAIS das colunas no SEU arquivo
+column_mapping:
+  plan: 'Test Plan'          # Coluna com o nome do plano geral
+  module: 'Test Module'        # Coluna com o nome do módulo/caso de teste
+  summary: 'Test Summary'      # Coluna com a descrição e passos do teste (a ser analisada)
+  path: 'Path'              # Coluna com o caminho (feliz/infeliz)
+  # Adicione outros mapeamentos se quiser incluir mais colunas originais na saída
+  # exemplo_outra_coluna: 'Nome Real da Outra Coluna'
+
+# --- Configurações de Saída ---
+output_options:
+  # Diretório onde os arquivos JSON/YAML serão salvos
+  directory: 'planos_de_teste_pix_output'
+  # Gerar arquivo JSON para cada plano? (true/false)
+  generate_json: true
+  # Gerar arquivo YAML para cada plano? (true/false)
+  generate_yaml: true
+  # Incluir os dados extraídos da análise do sumário na saída?
+  include_extracted_data: true
+
+# --- Regras de Análise (Parsing) para a Coluna 'summary' ---
+# Esta é a parte mais importante e que mais exige adaptação.
+# Usamos Expressões Regulares (Regex) para encontrar padrões no texto.
+# Use grupos nomeados (?P<nome>...) para facilitar a extração.
+parsing_rules:
+  # Padrão para encontrar chamadas de API (Método HTTP e Path)
+  # Ex: "Call the POST recurring-consents endpoint"
+  endpoint_pattern: 'Call the (?P<method>POST|GET|PATCH|DELETE)\s+(?P<path>\S+)\s+endpoint'
+
+  # Lista de padrões para encontrar campos e valores sendo usados/definidos
+  # Adaptar para os padrões comuns no seu texto. Ordem pode importar.
+  field_value_patterns:
+    # Ex: "with startDateTime as D+1"
+    - 'with\s+(?P<field>\w+)\s+as\s+(?P<value>\S+)'
+    # Ex: "amount as 1 BRL"
+    - '\s+(?P<field>amount|fixedAmount|maximumVariableAmount|minimumVariableAmount)\s+as\s+(?P<value>[\d\.]+\s*BRL|\S+)'
+     # Ex: "period as SEMANAL"
+    - '\s+(?P<field>period)\s+as\s+(?P<value>\w+)'
+    # Ex: "date as D+0"
+    - '\s+(?P<field>date)\s+as\s+(?P<value>D[+-]\d+)'
+    # Ex: "sending firstPayment information with amount as 1 BRL" (captura o contexto 'firstPayment' e o campo/valor)
+    # - 'sending\s+(?P<context>\w+)\s+information\s+with\s+(?P<field>\w+)\s+as\s+(?P<value>\S+)' # Exemplo mais complexo
+    # Adicione mais padrões conforme necessário...
+
+  # Padrão para encontrar status esperados
+  # Ex: "ensure status as AWAITING_AUTHORISATION"
+  response_status_pattern: 'ensure status is (?P<status>\w+)|ensure status as (?P<status_alt>\w+)' # Usa | para OU
+
+  # Padrão para encontrar códigos HTTP esperados
+  # Ex: "Expect 201 - Validate Response"
+  response_code_pattern: 'Expect (?P<code>\d{3})'
+
+  # Padrão para encontrar 'rejectionReason.code'
+  # Ex: "rejectionReason.code is PAGAMENTO_DIVERGENTE_CONSENTIMENTO"
+  rejection_reason_pattern: 'rejectionReason\.code is (?P<reason>\w+)'
+
+  # Padrão (opcional) para extrair palavras-chave da descrição inicial (antes dos '·')
+  # Pode ser complexo, talvez começar só com a extração estruturada acima.
+  # initial_description_keywords_pattern: '^\s*Ensure\s+(?P<keywords>.*?)\s*(\n|\r|$)' # Captura a primeira linha "Ensure..."
+
+# --- Listas Opcionais (Podem ajudar na análise posterior ou refinar a extração) ---
+known_endpoints:
+  - '/recurring-consents'
+  - '/recurring-payments'
+  # Adicione outros endpoints comuns
+
+key_api_fields:
+  - 'startDateTime'
+  - 'period'
+  - 'amount'
+  - 'fixedAmount'
+  - 'maximumVariableAmount'
+  - 'minimumVariableAmount'
+  - 'firstPayment'
+  - 'status'
+  - 'rejectionReason'
+  # Adicione outros campos relevantes
+
+functional_keywords_list:
+  - 'automatic pix'
+  - 'recurring'
+  - 'consent'
+  - 'payment'
+  - 'authorize'
+  - 'execute'
+  - 'cancel'
+  - 'schedule'
+  - 'retry'
+  - 'intraday'
+  - 'extraday'
+  - 'webhook'
+  - 'timezone'
+  - 'edition'
+  # Adicione outras palavras-chave relevantes
