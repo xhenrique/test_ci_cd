@@ -12,7 +12,7 @@ automatic-payments_test-plan_v2;automatic-payments_api_expirationDateTime_test-m
 • Expect 401 or 422 - If 422, validate Error Message
 • Try to refresh token
 • Expect 400 - Validate Error Message
-automatic-payments_test-plan_v2;automatic-payments_api_invalid-scope_test-module_v2;"Ensure scope validations are being executed at the POST recurring-payments endpoint, and a payment cannot be created in unhappy requests
+automatic-payments_test-plan_v2;automatic-payments_api_invalid-scope_test-module_v2;Ensure scope validations are being executed at the POST recurring-payments endpoint, and a payment cannot be created in unhappy requests
 • Call the POST recurring-consents endpoint with sweeping accounts data 
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Redirect the user to authorize consent, sending the scopes as scope=openid&recurring-payments&consent:{recurringConsentId} 
@@ -21,8 +21,8 @@ If no errors are returned:
 • Call the GET recurring-consents endpoint 
 • Expect 201 - Validate Response and ensure status is AUTHORISED 
 • Call the POST recurring-payments endpoint using an auth code token with a incorrect scope, as requested at the redirect 
-• Expect 403"
-automatic-payments_test-plan_v2;automatic-payments_api_multiple-consents-core_test-module_v2;"Ensure a multiple consents account requires full authorization before payment is executed. Afterwards, it will check if the consent will be fully authorized. This test will use the CPF/CNPJ on the config for ""Payment consent -  XXX - Multiple Consents Test"", or Skipped if the field is not filled. The CPF/CNPJ informed will also be sent at the creditor account.
+• Expect 403
+automatic-payments_test-plan_v2;automatic-payments_api_multiple-consents-core_test-module_v2;Ensure a multiple consents account requires full authorization before payment is executed. Afterwards, it will check if the consent will be fully authorized. This test will use the CPF/CNPJ on the config for ""Payment consent -  XXX - Multiple Consents Test"", or Skipped if the field is not filled. The CPF/CNPJ informed will also be sent at the creditor account.
 • Call the POST recurring-consents endpoint with sweeping accounts fields, with the Multiple Accounts CPF/CNPJ
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Redirect the user to authorize consent
@@ -34,7 +34,7 @@ automatic-payments_test-plan_v2;automatic-payments_api_multiple-consents-core_te
 • Call the GET recurring-consents endpoint
 • Expect 201 - Validate Response and ensure status is AUTHORISED
 • Call the POST recurring-payments endpoint with the selected creditor
-• Expect 201 - Validate Response"
+• Expect 201 - Validate Response
 automatic-payments_test-plan_v2;automatic-payments_api_negative-consents_test-module_v2;"Ensure validations are being executed at the POST recurring-consent endpoint, and a consent cannot be created in unhappy requests
 • Call the POST recurring-consents endpoint without the recurringConfiguration.sweeping field 
 • Expect 422 PARAMETRO_NAO_INFORMADO or 400 - Validate Error Message
