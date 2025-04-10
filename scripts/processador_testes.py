@@ -137,7 +137,7 @@ def process_csv(input_csv_path, config):
     parsing_rules = config.get('parsing_rules', {})
 
     # Validar configuração mínima
-    if not all([cols.get('plan'), cols.get('module'), cols.get('summary')]):
+    if not all([cols.get('planName'), cols.get('testModule'), cols.get('summary')]):
         print("Erro: Mapeamento de colunas 'plan', 'module', 'summary' é obrigatório na configuração.")
         return
 
@@ -160,7 +160,7 @@ def process_csv(input_csv_path, config):
         return
 
     # Verificar se as colunas mapeadas existem
-    required_cols_actual = [cols['plan'], cols['module'], cols['summary']]
+    required_cols_actual = [cols['planName'], cols['testModule'], cols['summary']]
     missing_cols = [col for col in required_cols_actual if col and col not in df.columns]
     if missing_cols:
         print(f"Erro: Colunas mapeadas não encontradas no CSV: {', '.join(missing_cols)}")
@@ -188,8 +188,7 @@ def process_csv(input_csv_path, config):
          return
 
     summary_col_name = cols['summary']
-    module_col_name = cols['module']
-    path_col_name = cols.get('path') # Pode não existir
+    module_col_name = cols['testModule']
 
     # Processar cada plano
     for plan_name_raw, group in grouped_plans:
@@ -202,8 +201,6 @@ def process_csv(input_csv_path, config):
                 'module_name': row[module_col_name],
                 'original_summary': row[summary_col_name] # Guarda o original se precisar
             }
-            if path_col_name and path_col_name in row:
-                 module_data['path'] = row[path_col_name]
 
             # --- Análise do Sumário ---
             if out_opts.get('include_extracted_data', False):
