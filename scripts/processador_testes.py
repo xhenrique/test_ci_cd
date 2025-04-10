@@ -160,7 +160,7 @@ def process_csv(input_csv_path, config):
         return
 
     # Verificar se as colunas mapeadas existem
-    required_cols_actual = [cols['plan'], cols['module'], cols['summary'], cols.get('path')]
+    required_cols_actual = [cols['planName'], cols['testModule'], cols['summary']]
     missing_cols = [col for col in required_cols_actual if col and col not in df.columns]
     if missing_cols:
         print(f"Erro: Colunas mapeadas não encontradas no CSV: {', '.join(missing_cols)}")
