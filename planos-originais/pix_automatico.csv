@@ -297,27 +297,3 @@ For this test the institution will need to register on it’s software statement
 • Call the Delete Registration Endpoint
 • Expect a 204 - No Content
 ",,
-automatic-payments-webhook_test-plan_v2,automatic-payments_api_webhook-revoked_test-module_v2,"Ensure that the tested institution has correctly implemented the webhook notification endpoint and that this endpoint is correctly called when a consent reaches the REVOKED state
-For this test the institution will need to register on it’s software statement a webhook under the following format - https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>
-• Obtain a SSA from the Directory
-• Ensure that on the SSA the attribute software_api_webhook_uris contains the URI https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>, where the alias is to be obtained from the field alias on the test configuration
-• Call the Registration Endpoint, also sending the field ""webhook_uris"":[“https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>”]
-• Expect a 201 - Validate Response
-• Set the test to wait for X seconds, where X is the time in seconds provided on the test configuration for the attribute webhookWaitTime. If no time is provided, X is defaulted to 600 seconds
-• Set the recurring consents webhook notification endpoint to be equal to https://web.conformance.directory.openbankingbrasil.org.br/test-mtls/a/<alias>/open-banking/webhook/v1/automatic-payments/v1/recurring-consents/{recurringConsentId}, where the alias is to be obtained from the field alias on the test configuration
-• Call the POST recurring-consents endpoint with sweeping accounts fields and a infinite consent, not sending the exspirationDateTime field
-• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
-• Call the GET recurring-consents endpoint
-• Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
-• Redirect the user to authorize consent
-• Call the GET recurring-consents endpoint
-• Expect 201 - Validate Response and ensure status is AUTHORISED
-• Call the PATCH {recurringConsentId} endpoint with  status as REVOKED, rejectedBy is USUARIO, rejectedFrom is INICIADORA and reason.code is REVOGADO_USUARIO
-• Expect 200 - Validate Message
-• all the GET recurring-consents endpoint
-• Expect 201 - Validate Response and ensure  status as REVOKED, rejectedBy is USUARIO, rejectedFrom is INICIADORA and reason.code is REVOGADO_USUARIO
-• Expect an incoming message, the defined consents endpoint, which  must be mtls protected - Wait 60 seconds for the messages to be returned
-• For the webhook calls - Return a 202 - Validate the contents of the incoming message, including the presence of the x-webhook-interaction-id header and that the timestamp value is within now and the start of the test
-• Call the Delete Registration Endpoint
-• Expect a 204 - No Content
-",,
