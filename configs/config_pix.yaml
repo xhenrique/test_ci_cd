@@ -10,10 +10,9 @@ csv_options:
 # --- Mapeamento das Colunas do CSV ---
 # Mapeia os nomes padrão que o script usa para os nomes REAIS das colunas no SEU arquivo
 column_mapping:
-  plan: 'Test Plan'          # Coluna com o nome do plano geral
-  module: 'Test Module'        # Coluna com o nome do módulo/caso de teste
-  summary: 'Test Summary'      # Coluna com a descrição e passos do teste (a ser analisada)
-  path: 'Path'              # Coluna com o caminho (feliz/infeliz)
+  plan: 'planName'          # Coluna com o nome do plano geral
+  module: 'testModule'        # Coluna com o nome do módulo/caso de teste
+  summary: 'summary'      # Coluna com a descrição e passos do teste (a ser analisada)
   # Adicione outros mapeamentos se quiser incluir mais colunas originais na saída
   # exemplo_outra_coluna: 'Nome Real da Outra Coluna'
 
