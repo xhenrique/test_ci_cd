@@ -1,5 +1,5 @@
 planName;testModule;summary
-automatic-payments_test-plan_v2;automatic-payments_api_expirationDateTime_test-module_v2;"Ensure a consent is expired after the expirationDateTime is reached, and that payments can no longer be executed.
+automatic-payments_test-plan_v2;automatic-payments_api_expirationDateTime_test-module_v2;"Ensure a consent is expired after the expirationDateTime is reached, and that payments can no longer be executed."
 • Call the POST recurring-consents endpoint without sending any limits at sweeping accounts fields, not sending the startDateTime, and expirationDateTime as now + 2 minutes
 • Expect 201 - Validate Response and ensure status as AWAITING_AUTHORISATION
 • Redirect the user to authorize consent
