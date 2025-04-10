@@ -7,7 +7,7 @@ automatic-payments_test-plan_v2,automatic-payments_api_expirationDateTime_test-m
 • Expect 201 - Validate Response and ensure status is AUTHORISED
 • Set the conformance suite to sleep for 2 minutes
 • Call the GET recurring-consents endpoint
-• Expect 201 - Validate Response and ensure status is CONSUMED
+• Expect 201 - Validate Response and ensure status is REVOKED
 • Call the POST recurring-payments endpoint
 • Expect 401 or 422 - Validate Error Message
 • Try to refresh token
